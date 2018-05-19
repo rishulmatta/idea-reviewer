@@ -26,3 +26,43 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+.container {
+    display: flex;
+}
+
+.container__side-bar {
+    display: flex;
+    flex-direction: column;
+    width: 10%;
+}
+
+.container__content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 90%;
+    box-sizing: border-box;
+}
+
+.container__content__login__register__action {
+    justify-content: space-between;
+    display: flex;
+}
+
+.container__content__login__register__signup form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: auto;
+    width: 40%;
+}
+
+
+.container__content__login__register__signup div {
+    margin: 0.5em;
+}
+
+.container__content__login__register__signup h3 {
+    text-align: center;
+}
