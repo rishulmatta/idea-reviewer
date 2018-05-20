@@ -1,10 +1,12 @@
 import React, {Component} from 'react';
+import 'material-design-icons/iconfont/material-icons.css';
 import './App.css';
 import {connect} from 'react-redux';
 import {fetchUserDetails} from './actions/auth';
 import Register from './pages/register';
 import Login from './pages/login';
 import Idea from './pages/user-idea';
+import SideBar from './pages/sidebar';
 import Toast from './components/toast'
 
 
@@ -43,11 +45,11 @@ class App extends Component {
         const path = this.state.active;
         switch (path) {
             case '#login':
-                return <Login/>;
+                return <div className="container__content__login__register__signup"><Login/></div>;
             case '#idea':
                 return <Idea/>;
             default:
-                return <Register/>;
+                return <div className="container__content__login__register__signup"><Register/></div>;
         }
     }
 
@@ -62,9 +64,9 @@ class App extends Component {
         return (
 
             <div className="container">
-                <div className="container__side-bar"> Sidebar</div>
+                <SideBar/>
                 <div className="container__content">
-                    <div className="container__content__login__register__signup">{this.getActivePage()}</div>
+                    {this.getActivePage()}
                 </div>
                 <Toast/>
             </div>

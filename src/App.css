@@ -1,3 +1,9 @@
+html,
+body {
+  height: 100%;
+  margin: 0
+}
+
 .App {
   text-align: center;
 }
@@ -27,22 +33,42 @@
   to { transform: rotate(360deg); }
 }
 
+#root {
+    height: 100%;
+}
+
 .container {
     display: flex;
+    height: 100%;
+}
+
+.sidebar__brand-container * {
+    margin-bottom: 10px;
 }
 
 .container__side-bar {
     display: flex;
     flex-direction: column;
     width: 10%;
+    padding: 2em;
+    text-align: center;
+}
+
+.sidebar__brand-header {
+    min-height: 10em;
 }
 
 .container__content {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     width: 90%;
+    justify-content: center;
     box-sizing: border-box;
+    padding: 2em;
+}
+
+.container__content__login__register__action {
+
 }
 
 .container__content__login__register__action {
@@ -65,4 +91,39 @@
 
 .container__content__login__register__signup h3 {
     text-align: center;
+}
+
+
+.sidebar__profile-pic {
+    height: 64px;
+    width: 64px;
+    border-radius: 64px;
+    border: 0px solid transparent;
+}
+
+.idea__header {
+    display: flex;
+    justify-content: space-around;
+    height: 10%;
+}
+
+.idea__header div {
+    min-width: 30%;
+}
+
+.idea__header__action {
+    text-align: right;
+}
+
+.idea__container {
+    text-align: center;
+    height: 90%;
+}
+
+.idea__container__ideas__header {
+    display: flex;
+}
+
+.idea__container__ideas__row {
+    display: flex;
 }
