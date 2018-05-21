@@ -7,8 +7,7 @@ import Register from './pages/register';
 import Login from './pages/login';
 import Idea from './pages/user-idea';
 import SideBar from './pages/sidebar';
-import Toast from './components/toast'
-
+import Toast from './components/toast';
 
 class App extends Component {
     constructor(opt) {

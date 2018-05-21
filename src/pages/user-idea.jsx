@@ -10,30 +10,36 @@ import {
     updateIdea,
     delIdea
 } from '../actions/idea';
-
+import Divider from '@material-ui/core/Divider';
+import TextField from '@material-ui/core/TextField';
+import Dialog from '../components/dialog'
+import Bulb from '../static/bulb.png';
 
 const IdeaHeader = (props) => {
-    return <div className="idea__header">
-        <div className="idea__header__title">
-            My Ideas
+    return <React.Fragment>
+        <div className="idea__header">
+            <div className="idea__header__title">
+                My Ideas
+            </div>
+            <div className="idea__header__action">
+                <Icon color="primary" onClick={props.add} style={{fontSize: 56}}>
+                    add_circle
+                </Icon>
+            </div>
         </div>
-        <div className="idea__header__action">
-            <Icon color="primary" onClick={props.add}>
-                add_circle
-            </Icon>
-        </div>
-    </div>;
+        <Divider light/>
+    </React.Fragment>;
 };
 
 const IdeaBodyEmpty = () => {
     return <div className="idea__container">
-        Got Ideas?
+        <img src={Bulb} className="container__ideas__got-idea"/>
+        <div>Got Ideas?</div>
     </div>
 };
 
 const IdeaRowEdit = ({values, onSave, onUpdate, onInputChange, toggleEdit}) => {
     const submitHandler = (evt) => {
-        // TODO: pass id
         evt.preventDefault();
         if (values.isSave === false) {
             onSave(values, values.id);
@@ -46,7 +52,8 @@ const IdeaRowEdit = ({values, onSave, onUpdate, onInputChange, toggleEdit}) => {
 
     return <React.Fragment>
         <form className="idea__container__ideas__row">
-            <input type="text" name="content" value={values.content} onChange={(evt) => onInputChange(evt, values.id)}/>
+            <TextField type="text" className="idea__container__ideas__header__content" name="content"
+                       value={values.content} onChange={(evt) => onInputChange(evt, values.id)}/>
             <input min="1" max="10" type="number" name="impact" value={values.impact}
                    onChange={(evt) => onInputChange(evt, values.id)}/>
             <input min="1" max="10" type="number" name="ease" value={values.ease}
@@ -69,8 +76,8 @@ const IdeaRowEdit = ({values, onSave, onUpdate, onInputChange, toggleEdit}) => {
 const IdeaRowView = ({values, toggleEdit, onDelete}) => {
 
 
-    return <React.Fragment>
-        <div>{values.content} </div>
+    return <div className="idea__container__ideas__row">
+        <div className="idea__container__ideas__header__content">{values.content} </div>
         <div>{values.impact} </div>
         <div>{values.ease} </div>
         <div>{values.confidence} </div>
@@ -79,11 +86,11 @@ const IdeaRowView = ({values, toggleEdit, onDelete}) => {
             <Icon color="primary" onClick={toggleEdit}>
                 edit
             </Icon>
-            <Icon color="primary" onClick={() => onDelete(values.id)}>
-                delete
-            </Icon>
+            <Dialog onDelete={onDelete} values={values}/>
         </div>
-    </React.Fragment>;
+
+
+        </div>;
 }
 
 class IdeaRow extends Component {
@@ -101,7 +108,7 @@ class IdeaRow extends Component {
     }
 
     render() {
-        return <li className="idea__container__ideas__row">
+        return <li>
             {this.state.edit ? <IdeaRowEdit {...this.props} toggleEdit={this.toggleEdit}/>
                 : <IdeaRowView {...this.props} toggleEdit={this.toggleEdit}/>}
         </li>;
@@ -110,15 +117,19 @@ class IdeaRow extends Component {
 
 const IdeaBody = ({ideas, update, save, inputChange, deleteIdea}) => {
     const getTable = () => {
-        ideas = ideas.map((val) => <IdeaRow values={val} key={val.id} onSave={save}
-                                            onUpdate={update} onDelete={deleteIdea}
-                                            onInputChange={inputChange}/>);
+        ideas = ideas.map((val, index) => <IdeaRow values={val} key={val.id} onSave={save}
+                                                   onUpdate={update} onDelete={deleteIdea}
+                                                   onInputChange={inputChange}/>);
 
-        ideas.unshift(<li className="idea__container__ideas__header">
-            <div><b>Avg</b></div>
-            <div><b>Confidence</b></div>
-            <div><b>Ease</b></div>
-            <div><b>Impact</b></div>
+        ideas.unshift(<li key="-1">
+            <div className="idea__container__ideas__header">
+                <div className="idea__container__ideas__header__content"></div>
+                <div><b>Impact</b></div>
+                <div><b>Ease</b></div>
+                <div><b>Confidence</b></div>
+                <div><b>Avg</b></div>
+                <div></div>
+            </div>
         </li>);
 
         return ideas;
@@ -145,8 +156,8 @@ const mapDispatchToPropsBody = (dispatch) => {
         update: (data, id) => {
             dispatch(updateIdea(data, id));
         },
-        deleteIdea: (id) => {
-            dispatch(delIdea(null, id));
+        deleteIdea: (data, id) => {
+            dispatch(delIdea(data, id));
         },
         inputChange: (evt, id) => {
             const {name, value} = evt.target;

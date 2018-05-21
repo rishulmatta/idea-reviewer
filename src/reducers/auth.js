@@ -4,7 +4,8 @@ import {
     LOGIN_SUCCESS,
     USER_FETCH_SUCCESS,
     USER_FETCH_FAILURE,
-    REFRESH_TOKEN_SUCCESS
+    REFRESH_TOKEN_SUCCESS,
+    LOGOUT_SUCCESS
 } from '../actions/auth'
 
 const defaultState = {
@@ -41,6 +42,7 @@ const auth = (state = defaultState, action) => {
                 accessTokens: refTokensNew
             }
 
+        case LOGOUT_SUCCESS:
         case USER_FETCH_FAILURE:
             localStorage.removeItem('accessTokens');
             return {...defaultState};

@@ -2,7 +2,11 @@ import axios from 'axios';
 
 const baseUrl = 'https://small-project-api.herokuapp.com/';
 
-const getAccessToken = () => localStorage.getItem('accessTokens') ? JSON.parse(localStorage.getItem('accessTokens')).jwt: "";
+const getAccessToken = () => localStorage.getItem('accessTokens')
+    ? JSON.parse(localStorage.getItem('accessTokens')).jwt: "";
+
+const getRefreshToken = () => localStorage.getItem('accessTokens')
+    ? JSON.parse(localStorage.getItem('accessTokens')).refresh_token: "";
 
 export const post = (body, success, failure, dispatch, url, extraData) => {
     axios({
@@ -39,6 +43,17 @@ export const deleteIdea = (body, success, failure, dispatch, url, extraData) => 
         .catch((err) => dispatch({type: failure, payload: err.response.data.reason}));
 }
 
+export const deleteSession = (body, success, failure, dispatch, url, extraData) => {
+    axios({
+        method: 'delete',
+        headers: {
+          'X-Access-Token': getAccessToken()
+        },
+        data: {refresh_token: getRefreshToken()},
+        url: `${baseUrl}/access-tokens`
+    }).then((res) => dispatch({type: success, payload: res.data, ...extraData}))
+        .catch((err) => dispatch({type: failure, payload: err.response.data.reason}));
+}
 
 export const get = (success, failure, dispatch, url) => {
     axios({
