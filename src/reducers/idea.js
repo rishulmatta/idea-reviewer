@@ -31,6 +31,8 @@ const calculateAvg = (obj) => {
     return parseFloat(avg.toFixed(2));
 };
 
+const sortOrder = (a, b) => a.average_score < b.average_score;
+
 const idea = (state = defaultState, action) => {
     switch (action.type) {
         case ADD_IDEA:
@@ -48,14 +50,14 @@ const idea = (state = defaultState, action) => {
                 } else {
                     return idea;
                 }
-            });
+            }).sort(sortOrder);
             return {...state, ideas: newIdeas};
         case FETCH_IDEA_SUCCESS:
             return {
                 ...state, ideas: action.payload.map((idea) => {
                   idea.average_score = calculateAvg(idea);
                   return idea;
-                })
+                }).sort(sortOrder)
             };
         case FETCH_IDEA_FAILURE:
             return {...defaultState};

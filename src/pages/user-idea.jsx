@@ -10,6 +10,9 @@ import {
     updateIdea,
     delIdea
 } from '../actions/idea';
+import {
+    notifyError
+} from '../actions/global';
 import Divider from '@material-ui/core/Divider';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '../components/dialog'
@@ -38,9 +41,12 @@ const IdeaBodyEmpty = () => {
     </div>
 };
 
-const IdeaRowEdit = ({values, onSave, onUpdate, onInputChange, toggleEdit}) => {
+const IdeaRowEdit = ({values, onSave, onUpdate, onInputChange, toggleEdit, invalidContent}) => {
     const submitHandler = (evt) => {
         evt.preventDefault();
+        if (!values.content) {
+            return invalidContent('Please enter the content');
+        }
         if (values.isSave === false) {
             onSave(values, values.id);
         } else {
@@ -115,9 +121,11 @@ class IdeaRow extends Component {
     }
 }
 
-const IdeaBody = ({ideas, update, save, inputChange, deleteIdea}) => {
+const IdeaBody = ({ideas, update, save, inputChange, deleteIdea, setError}) => {
     const getTable = () => {
-        ideas = ideas.map((val, index) => <IdeaRow values={val} key={val.id} onSave={save}
+        ideas = ideas.map((val, index) => <IdeaRow values={val} key={val.id}
+                                                   invalidContent={setError}
+                                                   onSave={save}
                                                    onUpdate={update} onDelete={deleteIdea}
                                                    onInputChange={inputChange}/>);
 
@@ -162,6 +170,9 @@ const mapDispatchToPropsBody = (dispatch) => {
         inputChange: (evt, id) => {
             const {name, value} = evt.target;
             dispatch(inputChange({id, name, value}));
+        },
+        setError: (msg) => {
+            dispatch(notifyError(msg))
         }
     };
 };
